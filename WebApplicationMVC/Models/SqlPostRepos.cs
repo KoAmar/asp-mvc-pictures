@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApplicationMVC.Models
@@ -16,9 +12,15 @@ namespace WebApplicationMVC.Models
             _context = context;
         }
 
-        public IEnumerable<Post> GetAllPosts() => _context.Posts;
+        public IEnumerable<Post> GetAllPosts()
+        {
+            return _context.Posts.Include(post => post.TopicOfPost);
+        }
 
-        public Post GetPost(int id) => _context.Posts.Find(id);
+        public Post GetPost(int id)
+        {
+            return _context.Posts.Find(id);
+        }
 
         public Post DeletePost(int id)
         {

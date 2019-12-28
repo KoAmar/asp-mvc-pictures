@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApplicationMVC.Models;
@@ -14,7 +11,7 @@ namespace WebApplicationMVC.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IPostRepository _postRepository;
 
-        public HomeController(ILogger<HomeController> logger,IPostRepository postRepository)
+        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository)
         {
             _logger = logger;
             _postRepository = postRepository;
@@ -22,7 +19,9 @@ namespace WebApplicationMVC.Controllers
 
         public IActionResult Index()
         {
-            return View(_postRepository.GetAllPosts());
+            var allPosts = _postRepository.GetAllPosts();
+            var first = allPosts.ToArray()[0];
+            return View(allPosts);
         }
 
         public IActionResult Privacy()
@@ -33,7 +32,7 @@ namespace WebApplicationMVC.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }

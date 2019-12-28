@@ -8,54 +8,51 @@ namespace WebApplicationMVC.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Topics",
-                columns: table => new
+                "Topics",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Topics", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Topics", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
+                "Posts",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true),
                     CreatorLogin = table.Column<string>(nullable: true),
-                    CreationDate = table.Column<DateTime>(nullable: false),
+                    CreationDate = table.Column<DateTime>(),
                     TopicOfPostId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_Topics_TopicOfPostId",
-                        column: x => x.TopicOfPostId,
-                        principalTable: "Topics",
-                        principalColumn: "Id",
+                        "FK_Posts_Topics_TopicOfPostId",
+                        x => x.TopicOfPostId,
+                        "Topics",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_TopicOfPostId",
-                table: "Posts",
-                column: "TopicOfPostId");
+                "IX_Posts_TopicOfPostId",
+                "Posts",
+                "TopicOfPostId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Posts");
+                "Posts");
 
             migrationBuilder.DropTable(
-                name: "Topics");
+                "Topics");
         }
     }
 }
