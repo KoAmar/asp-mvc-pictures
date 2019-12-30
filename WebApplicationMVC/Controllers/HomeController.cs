@@ -18,7 +18,7 @@ namespace WebApplicationMVC.Controllers
 
         public IActionResult Index()
         {
-            return View(_postRepository.GetAllPosts());
+            return RedirectToAction("Index", "Posts");
         }
 
 
@@ -30,7 +30,7 @@ namespace WebApplicationMVC.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

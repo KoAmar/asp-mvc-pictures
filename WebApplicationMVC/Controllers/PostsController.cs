@@ -1,93 +1,116 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using WebApplicationMVC.Models;
 
-//namespace WebApplicationMVC.Controllers
-//{
-//    public class PostsController : Controller
-//    {
-//        // GET: Posts
-//        public ActionResult Index()
-//        {
-//            return View();
-//        }
+namespace WebApplicationMVC.Controllers
+{
+    public class PostsController : Controller
+    {
+        private readonly IPostRepository _postRepository;
 
-//        // GET: Posts/Details/5
-//        public ActionResult Details(int id)
-//        {
-//            return View();
-//        }
+        public PostsController(IPostRepository postRepository)
+        {
+            _postRepository = postRepository;
+        }
+        // GET: Posts
+        public ActionResult Index()
+        {
+            return View(_postRepository.GetAllPosts());
+        }
 
-//        // GET: Posts/Create
-//        public ActionResult Create()
-//        {
-//            return View();
-//        }
+        // GET: Posts/Details/5
+        public ActionResult Details(int id)
+        {
+            var post = _postRepository.GetPost(id);
 
-//        // POST: Posts/Create
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult Create(IFormCollection collection)
-//        {
-//            try
-//            {
-//                // TODO: Add insert logic here
+            if (post == null)
+            {
+                return NotFound();
+            }
 
-//                return RedirectToAction(nameof(Index));
-//            }
-//            catch
-//            {
-//                return View();
-//            }
-//        }
+            return View(post);
+        }
 
-//        // GET: Posts/Edit/5
-//        public ActionResult Edit(int id)
-//        {
-//            return View();
-//        }
+        // GET: Posts/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
 
-//        // POST: Posts/Edit/5
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult Edit(int id, IFormCollection collection)
-//        {
-//            try
-//            {
-//                // TODO: Add update logic here
+        // POST: Posts/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Post post)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _postRepository.AddPost(post);
+                }
+                else
+                {
+                    return View(post);
+                }
 
-//                return RedirectToAction(nameof(Index));
-//            }
-//            catch
-//            {
-//                return View();
-//            }
-//        }
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
-//        // GET: Posts/Delete/5
-//        public ActionResult Delete(int id)
-//        {
-//            return View();
-//        }
+        // GET: Posts/Edit/5
+        public ActionResult Edit(int id)
+        {
+            var post = _postRepository.GetPost(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
 
-//        // POST: Posts/Delete/5
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult Delete(int id, IFormCollection collection)
-//        {
-//            try
-//            {
-//                // TODO: Add delete logic here
+            return View(post);
+        }
 
-//                return RedirectToAction(nameof(Index));
-//            }
-//            catch
-//            {
-//                return View();
-//            }
-//        }
-//    }
-//}
+        // POST: Posts/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Post post)
+        {
+            if (id != post.Id)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _postRepository.UpdatePost(post); 
+                }
+                else
+                {
+                    return View(post);
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult Delete(int id)
+        {
+            _postRepository.DeletePost(id);
+
+            return RedirectToAction("Index");
+        }
+    }
+}
