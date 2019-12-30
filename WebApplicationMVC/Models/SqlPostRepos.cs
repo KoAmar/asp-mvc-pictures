@@ -14,7 +14,7 @@ namespace WebApplicationMVC.Models
 
         public IEnumerable<Post> GetAllPosts()
         {
-            return _context.Posts.Include(post => post.TopicOfPost);
+            return _context.Posts;
         }
 
         public Post GetPost(int id)

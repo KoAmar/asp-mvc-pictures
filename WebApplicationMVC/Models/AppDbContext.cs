@@ -9,7 +9,6 @@ namespace WebApplicationMVC.Models
         {
         }
 
-        public DbSet<Topic> Topics { get; set; }
         public DbSet<Post> Posts { get; set; }
     }
 }

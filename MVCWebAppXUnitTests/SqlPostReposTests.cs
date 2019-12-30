@@ -19,15 +19,12 @@ namespace MVCWebAppXUnitTests
                 CreationDate = DateTime.Now,
                 CreatorLogin = "Test",
                 Text = "Test text",
-                TopicOfPost = new Topic() { Title = "TopicTitle", Id = 1 }
             };
 
             var savedPost = postRepository.AddPost(post);
 
             var count = postRepository.GetAllPosts().Count();
             Assert.Equal(1, count);
-            Assert.Equal(post.TopicOfPost.Title, postRepository.GetPost(1).TopicOfPost.Title);
-            Assert.NotNull(savedPost.TopicOfPost);
         }
 
         private IPostRepository GetPostRepository()
