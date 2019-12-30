@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApplicationMVC.Models;
@@ -19,10 +18,9 @@ namespace WebApplicationMVC.Controllers
 
         public IActionResult Index()
         {
-            var allPosts = _postRepository.GetAllPosts();
-            var first = allPosts.ToArray()[0];
-            return View(allPosts);
+            return View(_postRepository.GetAllPosts());
         }
+
 
         public IActionResult Privacy()
         {
