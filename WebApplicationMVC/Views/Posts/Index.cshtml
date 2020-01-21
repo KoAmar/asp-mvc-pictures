@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<Post>
+
+@{
+    ViewBag.Title = "Posts";
+}
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -6,6 +11,8 @@
 
 @foreach (var item in Model)
 {
+    var photoPath = "~/images/" + (item.PreviewImagePath ?? "noimage.jpg");
+
     <div class="row justify-content-around">
         <div class="col-md-8">
             <div class="card m-1 bg-light">
@@ -19,6 +26,9 @@
                             @Html.DisplayFor(modelItem => item.CreationDate)
                         </p>
                     </div>
+                    <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" alt=""/>
+
+
                     <p class="card-text">
                         @Html.DisplayFor(modelItem => item.Text)
                     </p>

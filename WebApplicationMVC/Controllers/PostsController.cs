@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplicationMVC.Models;
+using WebApplicationMVC.ViewModels;
 
 namespace WebApplicationMVC.Controllers
 {
@@ -44,17 +46,45 @@ namespace WebApplicationMVC.Controllers
         // POST: Posts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Post post)
+        public ActionResult Create(PostCreateViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    //string uploadsFolder = Path.Combine(
+                    //    Directory.GetCurrentDirectory(), "wwwroot", "images");
+                    //uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                    //string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+
+                    string uniqueFileName = null;
+
+                    if (model.Photo != null)
+                    {
+                        var uploadsFolder = Path.Combine(
+                                Directory.GetCurrentDirectory(), "wwwroot", "images");
+                        uniqueFileName = Guid.NewGuid() + "_" + model.Photo.FileName;
+
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
+
+                    var post = new Post
+                    {
+                        Title = model.Title,
+                        CreatorLogin = model.CreatorLogin,
+                        Text = model.Text,
+                        CreationDate = DateTime.Now,
+                        PreviewImagePath = uniqueFileName
+                    };
+
                     _postRepository.AddPost(post);
                 }
                 else
                 {
-                    return View(post);
+                    return View();
                 }
 
                 return RedirectToAction("Index");
