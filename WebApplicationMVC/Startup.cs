@@ -35,7 +35,9 @@ namespace WebApplicationMVC
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+                //app.UseStatusCodePages();
                 app.UseHsts();
             }
 
@@ -50,7 +52,7 @@ namespace WebApplicationMVC
             {
                 endpoints.MapControllerRoute(
                     "default",
-                    "{controller=Home}/{action=Index}/{id?}");
+                    "{controller=Posts}/{action=Index}/{id?}");
             });
         }
     }

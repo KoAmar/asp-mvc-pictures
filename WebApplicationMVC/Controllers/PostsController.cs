@@ -31,7 +31,8 @@ namespace WebApplicationMVC.Controllers
 
             if (post == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("PostNotFound", id);
             }
 
             return View(post);
@@ -136,6 +137,8 @@ namespace WebApplicationMVC.Controllers
             }
         }
 
+        // GET: Posts/Delete/5
+        [HttpGet]
         public ActionResult Delete(int id)
         {
             _postRepository.DeletePost(id);
