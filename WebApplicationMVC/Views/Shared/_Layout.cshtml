@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,29 +13,55 @@
     <header>
         <nav class="navbar navbar-expand-sm
              navbar-toggleable-sm navbar-light
-             bg-white border-bottom 
+             bg-white border-bottom
              box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Posts"
                    asp-action="Index">WebApplicationMVC</a>
-                <button class="navbar-toggler" 
-                        type="button" data-toggle="collapse" 
-                        data-target=".navbar-collapse" 
+                <button class="navbar-toggler"
+                        type="button" data-toggle="collapse"
+                        data-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse
-                     d-sm-inline-flex flex-sm-row-reverse">
+                     d-sm-inline-flex">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area=""
                                asp-controller="Posts" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" 
+                            <a class="nav-link text-dark" asp-area=""
                                asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-controller="account" asp-action="logout">
+                                    <button type="submit" style="width:auto"
+                                            class="nav-link btn btn-link py-0">
+                                        Logout @User.Identity.Name
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="account" asp-action="register">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="account" asp-action="login">
+                                    Login
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -47,7 +75,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - WebApplicationMVC - 
+            &copy; 2019 - WebApplicationMVC -
             <a asp-area=""
                asp-controller="Home"
                asp-action="Privacy">
