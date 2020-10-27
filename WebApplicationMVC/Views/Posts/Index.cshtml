@@ -1,12 +1,17 @@
 ﻿@model IEnumerable<Post>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewBag.Title = "Posts";
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (SignInManager.IsSignedIn(User))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
 
 @foreach (var item in Model)
@@ -26,16 +31,19 @@
                             @Html.DisplayFor(modelItem => item.CreationDate)
                         </p>
                     </div>
-                    <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" alt=""/>
+                    <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" alt="" />
 
 
                     <p class="card-text">
                         @Html.DisplayFor(modelItem => item.Text)
                     </p>
                     <div class="d-flex justify-content-center">
-                        <a class="card-link" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        @if (User.Identity.Name != null && User.Identity.Name.Equals(item.CreatorLogin))
+                        {
+                            <a class="card-link" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="card-link" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
                         <a class="card-link" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                        <a class="card-link" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </div>
                 </div>
             </div>
