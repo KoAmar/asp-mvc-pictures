@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -23,15 +24,16 @@ namespace WebApplicationMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             services.AddScoped<IPostRepository, SqlPostRepos>();
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer("Data Source=PORTABLE-LAPTOP;Integrated Security=True;database=BlogDb"));
-
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+                //"Data Source=PORTABLE-LAPTOP;Integrated Security=True;database=BlogDb"
+                //"Data Source=(localdb)\\MSSQLLocalDB;Integrated Security=True;database=BlogDb"
+                Configuration.GetConnectionString("azure1")
+                ));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext db)
         {
             if (env.IsDevelopment())
             {
@@ -45,6 +47,8 @@ namespace WebApplicationMVC
                 app.UseHsts();
             }
 
+            db.Database.EnsureCreated();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -55,9 +59,7 @@ namespace WebApplicationMVC
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    "default",
-                    "{controller=Posts}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Posts}/{action=Index}/{id?}");
             });
         }
     }
