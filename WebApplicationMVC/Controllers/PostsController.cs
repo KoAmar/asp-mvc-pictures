@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApplicationMVC.Models;
 using WebApplicationMVC.ViewModels;
@@ -13,10 +15,13 @@ namespace WebApplicationMVC.Controllers
     public class PostsController : Controller
     {
         private readonly IPostRepository _postRepository;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public PostsController(IPostRepository postRepository)
+        public PostsController(IPostRepository postRepository,
+            UserManager<IdentityUser> userManager)
         {
             _postRepository = postRepository;
+            _userManager = userManager;
         }
         // GET: Posts
         public ActionResult Index()
@@ -75,7 +80,7 @@ namespace WebApplicationMVC.Controllers
                     var post = new Post
                     {
                         Title = model.Title,
-                        CreatorLogin = model.CreatorLogin,
+                        CreatorLogin = User.Identity.Name,
                         Text = model.Text,
                         CreationDate = DateTime.Now,
                         PreviewImagePath = uniqueFileName

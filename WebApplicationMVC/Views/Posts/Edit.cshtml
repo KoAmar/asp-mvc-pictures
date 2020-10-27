@@ -7,23 +7,24 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="PreviewImagePath"/>
             <div class="form-group">
-                <label asp-for="Title" ></label>
+                <label asp-for="Title"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Text" ></label>
+                <label asp-for="Text"></label>
                 <input asp-for="Text" class="form-control" />
                 <span asp-validation-for="Text" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatorLogin" ></label>
+                <label asp-for="CreatorLogin"></label>
                 <input asp-for="CreatorLogin" class="form-control" />
                 <span asp-validation-for="CreatorLogin" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreationDate" ></label>
+                <label asp-for="CreationDate"></label>
                 <input asp-for="CreationDate" class="form-control" />
                 <span asp-validation-for="CreationDate" class="text-danger"></span>
             </div>
