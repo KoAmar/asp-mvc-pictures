@@ -23,8 +23,8 @@ namespace WebApplicationMVC.Controllers
 
         public IActionResult Privacy()
         {
-            _logger.LogError("Hello Error");
-            throw new Exception("Error in Privacy");
+            //_logger.LogError("Hello Error");
+            //throw new Exception("Error in Privacy");
 
             return View();
         }
