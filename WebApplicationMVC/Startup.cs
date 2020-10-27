@@ -29,7 +29,7 @@ namespace WebApplicationMVC
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
                 //"Data Source=PORTABLE-LAPTOP;Integrated Security=True;database=BlogDb"
                 //"Data Source=(localdb)\\MSSQLLocalDB;Integrated Security=True;database=BlogDb"
-                Configuration.GetConnectionString("local")
+                Configuration.GetConnectionString("azure1")
                 ));
         }
 
