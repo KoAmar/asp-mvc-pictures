@@ -16,12 +16,15 @@ namespace WebApplicationMVC.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ICommentsRepository _commentsRepository;
 
         public PostsController(IPostRepository postRepository,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            ICommentsRepository commentsRepository)
         {
             _postRepository = postRepository;
             _userManager = userManager;
+            _commentsRepository = commentsRepository;
         }
         // GET: Posts
         public ActionResult Index()
@@ -33,14 +36,29 @@ namespace WebApplicationMVC.Controllers
         public ActionResult Details(int id)
         {
             var post = _postRepository.GetPost(id);
-
             if (post == null)
             {
+                
                 Response.StatusCode = 404;
+
                 return View("PostNotFound", id);
+
             }
 
-            return View(post);
+            var details = new PostDetailsAndCommentsViewModel()
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Text = post.Text,
+                CreationDate = post.CreationDate,
+                CreatorLogin = post.CreatorLogin,
+                PreviewImagePath = post.PreviewImagePath,
+                Comments = _commentsRepository.GetAllComments()
+            };
+
+
+           return View(details);
+
         }
 
         // GET: Posts/Create

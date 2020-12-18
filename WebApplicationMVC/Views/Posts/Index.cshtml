@@ -5,15 +5,8 @@
 @{
     ViewBag.Title = "Posts";
 }
-
-@if (SignInManager.IsSignedIn(User))
-{
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-}
-
-
+<h3>All posts</h3>
+<hr />
 @foreach (var item in Model)
 {
     var photoPath = "~/images/" + (item.PreviewImagePath ?? "noimage.jpg");
@@ -31,10 +24,10 @@
                             @Html.DisplayFor(modelItem => item.CreationDate)
                         </p>
                     </div>
-                    <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" alt="" />
+                    <img class="card-img-top imageThumbnail" style="border-radius: 8px" src="@photoPath" asp-append-version="true" alt="" />
 
-
-                    <p class="card-text">
+                    
+                    <p class="card-text mt-2">
                         @Html.DisplayFor(modelItem => item.Text)
                     </p>
                     <div class="d-flex justify-content-center">

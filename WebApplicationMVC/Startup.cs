@@ -26,10 +26,11 @@ namespace WebApplicationMVC
             services.AddControllersWithViews();
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             services.AddScoped<IPostRepository, SqlPostRepos>();
+            services.AddScoped<ICommentsRepository, SqlCommentsRepos>();
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
                 //"Data Source=PORTABLE-LAPTOP;Integrated Security=True;database=BlogDb"
                 //"Data Source=(localdb)\\MSSQLLocalDB;Integrated Security=True;database=BlogDb"
-                Configuration.GetConnectionString("azure1")
+                Configuration.GetConnectionString("local")
                 ));
         }
 
